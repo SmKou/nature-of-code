@@ -3,7 +3,7 @@ Walker walker;
 void setup() {
   size(640, 240);
   background(255);
-  walker = new GaussianWalker();
+  walker = new PerlinWalker2();
 }
 
 void draw() {
@@ -115,5 +115,42 @@ class GaussianWalker extends Walker {
     
     if (y < 1)               y = height;
     else if (y > height - 1) y = 0;
+  }
+}
+
+class PerlinWalker extends Walker {
+  float tx = 0.0;
+  float ty = 1.0;
+  PerlinWalker() { super(); }
+  
+  void step() {
+    float n = noise(tx);
+    x = map(n, 0, 1, 0, width);
+    n = noise(ty);
+    y = map(n, 0, 1, 0, height);
+    
+    tx += 0.01;
+    ty += 0.01;
+  }
+}
+
+class PerlinWalker2 extends Walker {
+  float tx = 0.0, ty = 1.0;
+  PerlinWalker2() { super(); }
+  
+  void step() {
+    float n = noise(tx);
+    x += map(n, 0, 1, -2, 2);
+    n = noise(ty);
+    y += map(n, 0, 1, -2, 2);
+    
+    if (x < 1)               x = width;
+    else if (x > width - 1)  x = 0;
+    
+    if (y < 1)               y = height;
+    else if (y > height - 1) y = 0;
+    
+    tx += 0.01;
+    ty += 0.01;
   }
 }
